@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -76,6 +77,15 @@
       font-size: 1.1em;
     }
 
+    .mode-group {
+      margin-bottom: 1em;
+      font-size: 1.1em;
+    }
+
+    .mode-group label {
+      margin: 0 1em;
+    }
+
     .all-options {
       display: none;
       margin-top: 1em;
@@ -106,6 +116,37 @@
 
     <h1>Englisch lernen</h1>
 
+
+    <!-- Wörter / Sätze -->
+
+    <div class="mode-group" id="modeGroup">
+
+      <label>
+        <input
+          type="radio"
+          name="mode"
+          value="words"
+          checked
+          onchange="changeMode()"
+        >
+        Wörter
+      </label>
+
+      <label>
+        <input
+          type="radio"
+          name="mode"
+          value="sentences"
+          onchange="changeMode()"
+        >
+        Sätze
+      </label>
+
+    </div>
+
+
+    <!-- Übersetzungsrichtung -->
+
     <div class="radio-group" id="directionGroup">
 
       <label>
@@ -131,6 +172,8 @@
 
     </div>
 
+
+    <!-- Themenauswahl -->
 
     <div class="radio-group">
 
@@ -161,16 +204,31 @@
         <option value="tiere">Tiere</option>
       </select>
 
+
+      <!-- All: Sprache zufällig wählen -->
+
       <div id="allOptions" class="all-options">
+
         <label>
-          <input type="checkbox" id="randomEnglish" checked onchange="resetAllRandom()">
+          <input
+            type="checkbox"
+            id="randomEnglish"
+            checked
+            onchange="resetAllRandom()"
+          >
           🇬🇧 Englisch
         </label>
 
         <label>
-          <input type="checkbox" id="randomGerman" checked onchange="resetAllRandom()">
+          <input
+            type="checkbox"
+            id="randomGerman"
+            checked
+            onchange="resetAllRandom()"
+          >
           🇩🇪 Deutsch
         </label>
+
       </div>
 
     </div>
@@ -220,18 +278,31 @@
 
 <script>
 
+
 /*
+ * ============================================================
  * 1. Begrüßung
+ * ============================================================
  */
 
 const begruessung = [
 
   { en: "Hello!", de: "Hallo!" },
   { en: "Hi!", de: "Hi!" },
+  { en: "Good bye!", de: "Tschüss!" },
+  { en: "Bye bye!", de: "Bis dann!" },
+  { en: "See you!", de: "Wir sehen uns!" }
+
+];
+
+
+const begruessung_saetze = [
+
   { en: "How are you?", de: "Wie geht’s dir?" },
   { en: "I am good!", de: "Mir geht’s gut!" },
   { en: "I am fine!", de: "Mir geht’s gut!" },
   { en: "And you?", de: "Und dir?" },
+
   { en: "I am fine, too.", de: "Mir geht’s auch gut." },
 
   { en: "What’s your name?", de: "Wie heißt du?" },
@@ -241,19 +312,24 @@ const begruessung = [
   { en: "What’s your father’s name?", de: "Wie heißt dein Vater?" },
 
   { en: "I am fine. And you?", de: "Mir geht’s gut. Und dir?" },
-  { en: "Nice to meet you!", de: "Schön, dich zu sehen." },
-  { en: "Good bye!", de: "Tschüss!" },
-  { en: "Bye bye!", de: "Bis dann!" },
-  { en: "See you!", de: "Wir sehen uns!" }
+
+  { en: "Nice to meet you!", de: "Schön, dich zu sehen." }
 
 ];
 
 
 /*
+ * ============================================================
  * 2. Alter
+ * ============================================================
  */
 
 const alter = [
+
+];
+
+
+const alter_saetze = [
 
   { en: "How old are you?", de: "Wie alt bist du?" },
   { en: "I am 9 years old.", de: "Ich bin 9 Jahre alt." },
@@ -262,14 +338,21 @@ const alter = [
   { en: "I am 10 (ten) years old.", de: "Ich bin 10 Jahre alt." },
 
   { en: "My family is big | small.", de: "Meine Familie ist groß | klein." },
+
   { en: "Have you got a brother?", de: "Hast du einen Bruder?" },
-  { en: "Have you got a brother or a sister?", de: "Hast du einen Bruder oder eine Schwester?" }
+
+  {
+    en: "Have you got a brother or a sister?",
+    de: "Hast du einen Bruder oder eine Schwester?"
+  }
 
 ];
 
 
 /*
+ * ============================================================
  * 3. Nahrung
+ * ============================================================
  */
 
 const nahrung = [
@@ -295,8 +378,27 @@ const nahrung = [
   { en: "cucumber", de: "Gurke" },
   { en: "grapefruit", de: "Grapefruit" },
 
+  { en: "English breakfast", de: "Englisches Frühstück" },
+  { en: "mushrooms", de: "Pilze" },
+  { en: "toast", de: "Toast" },
+  { en: "fried eggs", de: "Spiegeleier" },
+  { en: "tea", de: "Tee" },
+  { en: "fried bacon", de: "gebratener Speck" },
+  { en: "baked beans", de: "Bohnen in Tomatensoße" },
+  { en: "sausages", de: "Würstchen" },
+  { en: "orange juice", de: "Orangensaft" },
+
+  { en: "with", de: "mit" },
+  { en: "without", de: "ohne" }
+
+];
+
+
+const nahrung_saetze = [
+
   { en: "I like …", de: "Ich mag …" },
   { en: "I don't like …", de: "Ich mag nicht …" },
+
   { en: "I don't like bananas.", de: "Ich mag keine Bananen." },
   { en: "I like jam.", de: "Ich mag Marmelade." },
   { en: "I don't like ham.", de: "Ich mag keinen Schinken." },
@@ -310,33 +412,39 @@ const nahrung = [
   { en: "I like tomatoes.", de: "Ich mag Tomaten." },
   { en: "I don't like onions.", de: "Ich mag keine Zwiebeln." },
 
-  { en: "What do you like on your sandwich?", de: "Was magst du auf deinem Sandwich?" },
-  { en: "I like on my sandwich", de: "Auf meinem Sandwich mag ich" },
-  { en: "cucumber and lettuce.", de: "Gurke und Salat." },
+  {
+    en: "What do you like on your sandwich?",
+    de: "Was magst du auf deinem Sandwich?"
+  },
 
-  { en: "English breakfast", de: "Englisches Frühstück" },
-  { en: "mushrooms", de: "Pilze" },
-  { en: "toast", de: "Toast" },
-  { en: "fried eggs", de: "Spiegeleier" },
-  { en: "tea", de: "Tee" },
-  { en: "fried bacon", de: "gebratener Speck" },
-  { en: "baked beans", de: "Bohnen in Tomatensoße" },
-  { en: "sausages", de: "Würstchen" },
-  { en: "orange juice", de: "Orangensaft" },
+  {
+    en: "I like on my sandwich",
+    de: "Auf meinem Sandwich mag ich"
+  },
+
+  {
+    en: "cucumber and lettuce.",
+    de: "Gurke und Salat."
+  },
 
   { en: "For breakfast I eat …", de: "Zum Frühstück esse ich …" },
-  { en: "with", de: "mit" },
-  { en: "For breakfast I drink …", de: "Zum Frühstück trinke ich …" },
-  { en: "without", de: "ohne" }
+  { en: "For breakfast I drink …", de: "Zum Frühstück trinke ich …" }
 
 ];
 
 
 /*
+ * ============================================================
  * 4. Bewegung
+ * ============================================================
  */
 
 const bewegung = [
+
+];
+
+
+const bewegung_saetze = [
 
   { en: "Clap your hands.", de: "Klatsche deine Hände." },
   { en: "Close your eyes.", de: "Schließe deine Augen." },
@@ -355,7 +463,9 @@ const bewegung = [
 
 
 /*
+ * ============================================================
  * 5. Zahlen
+ * ============================================================
  */
 
 const zahlen = [
@@ -382,6 +492,7 @@ const zahlen = [
   { en: "eighteen", de: "achtzehn" },
   { en: "nineteen", de: "neunzehn" },
   { en: "twenty", de: "zwanzig" },
+
   { en: "twenty-one", de: "einundzwanzig" },
   { en: "twenty-two", de: "zweiundzwanzig" },
   { en: "twenty-three", de: "dreiundzwanzig" },
@@ -392,7 +503,12 @@ const zahlen = [
   { en: "twenty-eight", de: "achtundzwanzig" },
   { en: "twenty-nine", de: "neunundzwanzig" },
   { en: "thirty", de: "dreißig" },
-  { en: "thirty-one", de: "einunddreißig" },
+  { en: "thirty-one", de: "einunddreißig" }
+
+];
+
+
+const zahlen_saetze = [
 
   { en: "When is your birthday?", de: "Wann ist dein Geburtstag?" },
   { en: "My birthday is in …", de: "Mein Geburtstag ist im …" }
@@ -401,7 +517,9 @@ const zahlen = [
 
 
 /*
+ * ============================================================
  * 6. Präpositionen
+ * ============================================================
  */
 
 const praepositionen = [
@@ -419,12 +537,20 @@ const praepositionen = [
   { en: "from", de: "von, aus" },
   { en: "to", de: "zu, nach" },
   { en: "before", de: "vor" },
-  { en: "after", de: "nach" },
+  { en: "after", de: "nach" }
+
+];
+
+
+const praepositionen_saetze = [
+
 ];
 
 
 /*
+ * ============================================================
  * 7. Gegenstände
+ * ============================================================
  */
 
 const gegenstaende = [
@@ -437,8 +563,15 @@ const gegenstaende = [
 ];
 
 
+const gegenstaende_saetze = [
+
+];
+
+
 /*
+ * ============================================================
  * 8. Körper
+ * ============================================================
  */
 
 const koerper = [
@@ -449,8 +582,15 @@ const koerper = [
 ];
 
 
+const koerper_saetze = [
+
+];
+
+
 /*
+ * ============================================================
  * 9. Stadt
+ * ============================================================
  */
 
 const stadt = [
@@ -462,8 +602,15 @@ const stadt = [
 ];
 
 
+const stadt_saetze = [
+
+];
+
+
 /*
+ * ============================================================
  * 10. Farben
+ * ============================================================
  */
 
 const farben = [
@@ -483,8 +630,15 @@ const farben = [
 ];
 
 
+const farben_saetze = [
+
+];
+
+
 /*
+ * ============================================================
  * 11. Natur
+ * ============================================================
  */
 
 const natur = [
@@ -505,7 +659,13 @@ const natur = [
   { en: "sea", de: "Meer" },
   { en: "stone", de: "Stein" },
   { en: "mud", de: "Matsch" },
-  { en: "grass", de: "Gras" },
+  { en: "grass", de: "Gras" }
+
+];
+
+
+const natur_saetze = [
+
   { en: "There is …", de: "Dort ist …" },
   { en: "There are …", de: "Dort sind …" }
 
@@ -513,7 +673,9 @@ const natur = [
 
 
 /*
+ * ============================================================
  * 12. Schule
+ * ============================================================
  */
 
 const schule = [
@@ -541,8 +703,15 @@ const schule = [
 ];
 
 
+const schule_saetze = [
+
+];
+
+
 /*
+ * ============================================================
  * 13. Wochentage
+ * ============================================================
  */
 
 const wochentage = [
@@ -565,8 +734,15 @@ const wochentage = [
 ];
 
 
+const wochentage_saetze = [
+
+];
+
+
 /*
+ * ============================================================
  * 14. Monate
+ * ============================================================
  */
 
 const monate = [
@@ -588,8 +764,15 @@ const monate = [
 ];
 
 
+const monate_saetze = [
+
+];
+
+
 /*
+ * ============================================================
  * 15. Jahreszeiten
+ * ============================================================
  */
 
 const jahreszeiten = [
@@ -602,8 +785,15 @@ const jahreszeiten = [
 ];
 
 
+const jahreszeiten_saetze = [
+
+];
+
+
 /*
+ * ============================================================
  * 16. Wetter
+ * ============================================================
  */
 
 const wetter = [
@@ -625,31 +815,60 @@ const wetter = [
 
   { en: "thundery", de: "gewittrig" },
   { en: "cool", de: "kühl" },
-  { en: "freezing", de: "eiskalt" },
+  { en: "freezing", de: "eiskalt" }
+
+];
+
+
+const wetter_saetze = [
+
   { en: "It's hailing.", de: "Es hagelt." },
-  { en: "What's the weather like today?", de: "Wie ist das Wetter heute?" }
+
+  {
+    en: "What's the weather like today?",
+    de: "Wie ist das Wetter heute?"
+  }
 
 ];
 
 
 /*
+ * ============================================================
  * 17. Allgemein
+ * ============================================================
  */
 
 const allgemein = [
 
+  { en: "the bed", de: "das Bett" }
+
+];
+
+
+const allgemein_saetze = [
+
   { en: "Where are you from?", de: "Woher kommst du?" },
   { en: "I am from Germany.", de: "Ich komme aus Deutschland." },
-  { en: "the bed", de: "das Bett" },
-  { en: "How many … are there?", de: "Wie viele … sind da?" },
+
+  {
+    en: "How many … are there?",
+    de: "Wie viele … sind da?"
+  },
+
   { en: "Where is the mouse?", de: "Wo ist die Maus?" },
-  { en: "You can see …", de: "Du kannst sehen …" }
+
+  {
+    en: "You can see …",
+    de: "Du kannst sehen …"
+  }
 
 ];
 
 
 /*
+ * ============================================================
  * 18. Adjektive
+ * ============================================================
  */
 
 const adjektive = [
@@ -661,8 +880,15 @@ const adjektive = [
 ];
 
 
+const adjektive_saetze = [
+
+];
+
+
 /*
+ * ============================================================
  * 19. Tiere
+ * ============================================================
  */
 
 const tiere = [
@@ -682,11 +908,18 @@ const tiere = [
 ];
 
 
+const tiere_saetze = [
+
+];
+
+
 /*
- * Zuordnung Pulldown -> Array
+ * ============================================================
+ * Zuordnung Pulldown -> Wörter
+ * ============================================================
  */
 
-const topics = {
+const topicsWords = {
 
   begruessung: begruessung,
   alter: alter,
@@ -712,16 +945,85 @@ const topics = {
 
 
 /*
+ * ============================================================
+ * Zuordnung Pulldown -> Sätze
+ * ============================================================
+ */
+
+const topicsSentences = {
+
+  begruessung: begruessung_saetze,
+  alter: alter_saetze,
+  nahrung: nahrung_saetze,
+  bewegung: bewegung_saetze,
+  zahlen: zahlen_saetze,
+  praepositionen: praepositionen_saetze,
+  gegenstaende: gegenstaende_saetze,
+  koerper: koerper_saetze,
+  stadt: stadt_saetze,
+  farben: farben_saetze,
+  natur: natur_saetze,
+  schule: schule_saetze,
+  wochentage: wochentage_saetze,
+  monate: monate_saetze,
+  jahreszeiten: jahreszeiten_saetze,
+  wetter: wetter_saetze,
+  allgemein: allgemein_saetze,
+  adjektive: adjektive_saetze,
+  tiere: tiere_saetze
+
+};
+
+
+/*
+ * ============================================================
  * Aktueller Index / All-Modus
+ * ============================================================
  */
 
 let currentWordIndex = 0;
+
 let allHistory = [];
+
 let allHistoryIndex = -1;
 
 
 /*
+ * ============================================================
+ * Wörter oder Sätze bestimmen
+ * ============================================================
+ */
+
+function getMode() {
+
+  return document.querySelector(
+    'input[name="mode"]:checked'
+  ).value;
+
+}
+
+
+/*
+ * ============================================================
+ * Aktuelle Themen-Sammlung bestimmen
+ * ============================================================
+ */
+
+function getCurrentTopics() {
+
+  if (getMode() === "sentences") {
+    return topicsSentences;
+  }
+
+  return topicsWords;
+
+}
+
+
+/*
+ * ============================================================
  * Aktuelles Array bestimmen
+ * ============================================================
  */
 
 function getCurrentArray() {
@@ -731,17 +1033,28 @@ function getCurrentArray() {
       "topicSelect"
     ).value;
 
+  const currentTopics =
+    getCurrentTopics();
+
+
   if (topic === "all") {
-    return Object.values(topics).flat();
+
+    return Object.values(
+      currentTopics
+    ).flat();
+
   }
 
-  return topics[topic];
+
+  return currentTopics[topic];
 
 }
 
 
 /*
+ * ============================================================
  * Übersetzungsrichtung bestimmen
+ * ============================================================
  */
 
 function getDirection() {
@@ -754,70 +1067,202 @@ function getDirection() {
 
 
 /*
+ * ============================================================
+ * Prüfen, ob das aktuelle Array Inhalte besitzt
+ * ============================================================
+ */
+
+function hasCurrentEntries() {
+
+  const currentArray =
+    getCurrentArray();
+
+  return currentArray.length > 0;
+
+}
+
+
+/*
+ * ============================================================
+ * Meldung bei leerem Themen-Array
+ * ============================================================
+ */
+
+function showEmptyMessage() {
+
+  const mode =
+    getMode();
+
+  document.getElementById(
+    "songText"
+  ).innerText =
+    mode === "sentences"
+      ? "Für dieses Thema sind noch keine Sätze vorhanden."
+      : "Für dieses Thema sind noch keine Wörter vorhanden.";
+
+
+  document.getElementById(
+    "feedbackArea"
+  ).innerText = "";
+
+}
+
+
+/*
+ * ============================================================
  * Zufälligen Eintrag für All erzeugen
+ * ============================================================
  */
 
 function createRandomAllEntry() {
 
-  const allWords = Object.values(topics).flat();
+  const currentTopics =
+    getCurrentTopics();
 
-  const englishChecked =
-    document.getElementById("randomEnglish").checked;
 
-  const germanChecked =
-    document.getElementById("randomGerman").checked;
+  const allWords =
+    Object.values(
+      currentTopics
+    ).flat();
 
-  if (!englishChecked && !germanChecked) {
+
+  if (allWords.length === 0) {
+
     return null;
+
   }
 
+
+  const englishChecked =
+    document.getElementById(
+      "randomEnglish"
+    ).checked;
+
+
+  const germanChecked =
+    document.getElementById(
+      "randomGerman"
+    ).checked;
+
+
+  if (!englishChecked && !germanChecked) {
+
+    return null;
+
+  }
+
+
   const word =
-    allWords[Math.floor(Math.random() * allWords.length)];
+    allWords[
+      Math.floor(
+        Math.random() * allWords.length
+      )
+    ];
+
 
   let language;
 
+
   if (englishChecked && germanChecked) {
-    language = Math.random() < 0.5 ? "en" : "de";
+
+    language =
+      Math.random() < 0.5
+        ? "en"
+        : "de";
+
   } else if (englishChecked) {
+
     language = "en";
+
   } else {
+
     language = "de";
+
   }
 
+
   return {
+
     word: word,
     language: language
+
   };
 
 }
 
 
 /*
+ * ============================================================
  * Zufälligen All-Eintrag zur Historie hinzufügen
+ * ============================================================
  */
 
 function addRandomAllEntry() {
 
-  const entry = createRandomAllEntry();
+  const entry =
+    createRandomAllEntry();
+
 
   if (!entry) {
-    document.getElementById(
-      "songText"
-    ).innerText = "Bitte Englisch und/oder Deutsch auswählen.";
+
+    const englishChecked =
+      document.getElementById(
+        "randomEnglish"
+      ).checked;
+
+    const germanChecked =
+      document.getElementById(
+        "randomGerman"
+      ).checked;
+
+
+    if (!englishChecked && !germanChecked) {
+
+      document.getElementById(
+        "songText"
+      ).innerText =
+        "Bitte Englisch und/oder Deutsch auswählen.";
+
+    } else {
+
+      showEmptyMessage();
+
+    }
+
 
     document.getElementById(
       "feedbackArea"
     ).innerText = "";
 
+
     return false;
+
   }
 
-  if (allHistoryIndex < allHistory.length - 1) {
-    allHistory = allHistory.slice(0, allHistoryIndex + 1);
+
+  if (
+    allHistoryIndex
+    <
+    allHistory.length - 1
+  ) {
+
+    allHistory =
+      allHistory.slice(
+        0,
+        allHistoryIndex + 1
+      );
+
   }
 
-  allHistory.push(entry);
-  allHistoryIndex = allHistory.length - 1;
+
+  allHistory.push(
+    entry
+  );
+
+
+  allHistoryIndex =
+    allHistory.length - 1;
+
 
   return true;
 
@@ -825,23 +1270,41 @@ function addRandomAllEntry() {
 
 
 /*
+ * ============================================================
  * Aktuellen Eintrag anzeigen
+ * ============================================================
  */
 
 function showCurrentWord() {
 
   const topic =
-    document.getElementById("topicSelect").value;
+    document.getElementById(
+      "topicSelect"
+    ).value;
+
+
+  /*
+   * ALL
+   */
 
   if (topic === "all") {
 
     if (allHistoryIndex < 0) {
+
       if (!addRandomAllEntry()) {
+
         return;
+
       }
+
     }
 
-    const entry = allHistory[allHistoryIndex];
+
+    const entry =
+      allHistory[
+        allHistoryIndex
+      ];
+
 
     document.getElementById(
       "songText"
@@ -850,11 +1313,45 @@ function showCurrentWord() {
         ? entry.word.en
         : entry.word.de;
 
+
     return;
+
   }
 
-  const currentArray = getCurrentArray();
-  const word = currentArray[currentWordIndex];
+
+  /*
+   * Einzelnes Thema
+   */
+
+  const currentArray =
+    getCurrentArray();
+
+
+  if (currentArray.length === 0) {
+
+    showEmptyMessage();
+
+    return;
+
+  }
+
+
+  if (
+    currentWordIndex
+    >=
+    currentArray.length
+  ) {
+
+    currentWordIndex = 0;
+
+  }
+
+
+  const word =
+    currentArray[
+      currentWordIndex
+    ];
+
 
   document.getElementById(
     "songText"
@@ -867,29 +1364,71 @@ function showCurrentWord() {
 
 
 /*
+ * ============================================================
+ * Wörter / Sätze wechseln
+ * ============================================================
+ */
+
+function changeMode() {
+
+  currentWordIndex = 0;
+
+  allHistory = [];
+
+  allHistoryIndex = -1;
+
+
+  document.getElementById(
+    "feedbackArea"
+  ).innerText = "";
+
+
+  showCurrentWord();
+
+}
+
+
+/*
+ * ============================================================
  * Thema wechseln
+ * ============================================================
  */
 
 function changeTopic() {
 
   currentWordIndex = 0;
+
   allHistory = [];
+
   allHistoryIndex = -1;
 
+
   const isAll =
-    document.getElementById("topicSelect").value === "all";
+    document.getElementById(
+      "topicSelect"
+    ).value === "all";
+
 
   document.getElementById(
     "allOptions"
-  ).style.display = isAll ? "block" : "none";
+  ).style.display =
+    isAll
+      ? "block"
+      : "none";
+
 
   document.getElementById(
     "directionGroup"
-  ).style.display = isAll ? "none" : "block";
+  ).style.display =
+    isAll
+      ? "none"
+      : "block";
+
 
   document.getElementById(
     "feedbackArea"
   ).innerText = "";
+
 
   showCurrentWord();
 
@@ -897,17 +1436,22 @@ function changeTopic() {
 
 
 /*
+ * ============================================================
  * All-Zufall nach Änderung einer Checkbox zurücksetzen
+ * ============================================================
  */
 
 function resetAllRandom() {
 
   allHistory = [];
+
   allHistoryIndex = -1;
+
 
   document.getElementById(
     "feedbackArea"
   ).innerText = "";
+
 
   showCurrentWord();
 
@@ -915,16 +1459,20 @@ function resetAllRandom() {
 
 
 /*
+ * ============================================================
  * Anzeige zurücksetzen
+ * ============================================================
  */
 
 function resetUI() {
 
   currentWordIndex = 0;
 
+
   document.getElementById(
     "feedbackArea"
   ).innerText = "";
+
 
   showCurrentWord();
 
@@ -932,40 +1480,84 @@ function resetUI() {
 
 
 /*
+ * ============================================================
  * Nächster Eintrag
+ * ============================================================
  */
 
 function nextWord() {
 
   const topic =
-    document.getElementById("topicSelect").value;
+    document.getElementById(
+      "topicSelect"
+    ).value;
+
+
+  /*
+   * ALL
+   */
 
   if (topic === "all") {
 
-    if (allHistoryIndex < allHistory.length - 1) {
+    if (
+      allHistoryIndex
+      <
+      allHistory.length - 1
+    ) {
+
       allHistoryIndex++;
+
     } else {
+
       if (!addRandomAllEntry()) {
+
         return;
+
       }
+
     }
 
+
     showCurrentWord();
+
 
     document.getElementById(
       "feedbackArea"
     ).innerText = "";
 
+
     return;
+
   }
 
-  const currentArray = getCurrentArray();
+
+  /*
+   * Einzelnes Thema
+   */
+
+  const currentArray =
+    getCurrentArray();
+
+
+  if (currentArray.length === 0) {
+
+    showEmptyMessage();
+
+    return;
+
+  }
+
 
   currentWordIndex =
-    (currentWordIndex + 1)
-    % currentArray.length;
+    (
+      currentWordIndex + 1
+    )
+    %
+    currentArray.length;
+
 
   showCurrentWord();
+
 
   document.getElementById(
     "feedbackArea"
@@ -975,29 +1567,60 @@ function nextWord() {
 
 
 /*
+ * ============================================================
  * Vorheriger Eintrag
+ * ============================================================
  */
 
 function prevWord() {
 
   const topic =
-    document.getElementById("topicSelect").value;
+    document.getElementById(
+      "topicSelect"
+    ).value;
+
+
+  /*
+   * ALL
+   */
 
   if (topic === "all") {
 
     if (allHistoryIndex > 0) {
+
       allHistoryIndex--;
+
       showCurrentWord();
+
     }
+
 
     document.getElementById(
       "feedbackArea"
     ).innerText = "";
 
+
     return;
+
   }
 
-  const currentArray = getCurrentArray();
+
+  /*
+   * Einzelnes Thema
+   */
+
+  const currentArray =
+    getCurrentArray();
+
+
+  if (currentArray.length === 0) {
+
+    showEmptyMessage();
+
+    return;
+
+  }
+
 
   currentWordIndex =
     (
@@ -1005,9 +1628,12 @@ function prevWord() {
       - 1
       + currentArray.length
     )
-    % currentArray.length;
+    %
+    currentArray.length;
+
 
   showCurrentWord();
+
 
   document.getElementById(
     "feedbackArea"
@@ -1017,21 +1643,37 @@ function prevWord() {
 
 
 /*
+ * ============================================================
  * Übersetzung anzeigen
+ * ============================================================
  */
 
 function checkTranslation() {
 
   const topic =
-    document.getElementById("topicSelect").value;
+    document.getElementById(
+      "topicSelect"
+    ).value;
+
+
+  /*
+   * ALL
+   */
 
   if (topic === "all") {
 
     if (allHistoryIndex < 0) {
+
       return;
+
     }
 
-    const entry = allHistory[allHistoryIndex];
+
+    const entry =
+      allHistory[
+        allHistoryIndex
+      ];
+
 
     document.getElementById(
       "feedbackArea"
@@ -1040,12 +1682,38 @@ function checkTranslation() {
         ? entry.word.de
         : entry.word.en;
 
+
     return;
+
   }
 
-  const currentArray = getCurrentArray();
-  const word = currentArray[currentWordIndex];
-  const direction = getDirection();
+
+  /*
+   * Einzelnes Thema
+   */
+
+  const currentArray =
+    getCurrentArray();
+
+
+  if (currentArray.length === 0) {
+
+    showEmptyMessage();
+
+    return;
+
+  }
+
+
+  const word =
+    currentArray[
+      currentWordIndex
+    ];
+
+
+  const direction =
+    getDirection();
+
 
   document.getElementById(
     "feedbackArea"
@@ -1058,7 +1726,9 @@ function checkTranslation() {
 
 
 /*
+ * ============================================================
  * Initialisieren
+ * ============================================================
  */
 
 changeTopic();
@@ -1067,3 +1737,4 @@ changeTopic();
 
 </body>
 </html>
+```
