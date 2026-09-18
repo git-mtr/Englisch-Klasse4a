@@ -106,12 +106,74 @@
       border-radius: 10px;
       cursor: pointer;
     }
+
+
+    .table-view {
+      display: none;
+      max-width: 1100px;
+      margin: auto;
+      background: white;
+      padding: 2em;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+
+    .overview-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1em;
+    }
+
+    .overview-table th,
+    .overview-table td {
+      padding: 0.65em 0.8em;
+      border-bottom: 1px solid #ddd;
+      vertical-align: top;
+    }
+
+    .overview-table .topic-row th {
+      background-color: #ffd54f;
+      color: #222;
+      font-size: 1.1em;
+      border-top: 1.2em solid white;
+    }
+
+    .overview-table .topic-row:first-child th {
+      border-top: none;
+    }
+
+    .overview-table .topic-name {
+      width: 24%;
+      text-align: left;
+    }
+
+    .overview-table .language-head {
+      width: 38%;
+      text-align: left;
+    }
+
+    .overview-table .empty-topic-cell {
+      width: 24%;
+    }
+
+    .view-toggle-wrap {
+      text-align: center;
+      margin: 2em auto 0;
+    }
+
+    .view-toggle-btn {
+      background-color: #607d8b;
+      color: white;
+      min-width: 190px;
+    }
+
   </style>
 </head>
 
 <body>
 
-  <div class="container">
+  <div class="container" id="formView">
 
     <h1>Englisch lernen</h1>
 
@@ -272,6 +334,26 @@
 
     </div>
 
+  </div>
+
+
+  <!-- Gesamttabelle -->
+
+  <div class="table-view" id="tableView">
+    <table class="overview-table" id="overviewTable"></table>
+  </div>
+
+
+  <!-- Umschalter Formular / Tabelle -->
+
+  <div class="view-toggle-wrap">
+    <button
+      class="view-toggle-btn"
+      id="viewToggleButton"
+      onclick="toggleView()"
+    >
+      Tabelle anzeigen
+    </button>
   </div>
 
 
@@ -1720,6 +1802,215 @@ function checkTranslation() {
     direction === "en-de"
       ? word.de
       : word.en;
+
+}
+
+
+/*
+ * ============================================================
+ * Gesamttabelle erzeugen
+ * ============================================================
+ */
+
+function buildOverviewTable() {
+
+  const table =
+    document.getElementById(
+      "overviewTable"
+    );
+
+
+  const topicSelect =
+    document.getElementById(
+      "topicSelect"
+    );
+
+
+  table.innerHTML = "";
+
+
+  Array.from(
+    topicSelect.options
+  ).forEach(option => {
+
+    const topicKey = option.value;
+
+
+    if (topicKey === "all") {
+
+      return;
+
+    }
+
+
+    const words =
+      topicsWords[topicKey] || [];
+
+
+    const sentences =
+      topicsSentences[topicKey] || [];
+
+
+    const entries = [
+      ...words,
+      ...sentences
+    ];
+
+
+    if (entries.length === 0) {
+
+      return;
+
+    }
+
+
+    const topicRow =
+      document.createElement(
+        "tr"
+      );
+
+
+    topicRow.className =
+      "topic-row";
+
+
+    topicRow.innerHTML = `
+      <th class="topic-name">${option.textContent}</th>
+      <th class="language-head">Englisch</th>
+      <th class="language-head">Deutsch</th>
+    `;
+
+
+    table.appendChild(
+      topicRow
+    );
+
+
+    entries.forEach(entry => {
+
+      const row =
+        document.createElement(
+          "tr"
+        );
+
+
+      const emptyCell =
+        document.createElement(
+          "td"
+        );
+
+
+      emptyCell.className =
+        "empty-topic-cell";
+
+
+      const englishCell =
+        document.createElement(
+          "td"
+        );
+
+
+      englishCell.textContent =
+        entry.en;
+
+
+      const germanCell =
+        document.createElement(
+          "td"
+        );
+
+
+      germanCell.textContent =
+        entry.de;
+
+
+      row.appendChild(
+        emptyCell
+      );
+
+
+      row.appendChild(
+        englishCell
+      );
+
+
+      row.appendChild(
+        germanCell
+      );
+
+
+      table.appendChild(
+        row
+      );
+
+    });
+
+  });
+
+}
+
+
+/*
+ * ============================================================
+ * Zwischen Formular und Gesamttabelle wechseln
+ * ============================================================
+ */
+
+function toggleView() {
+
+  const formView =
+    document.getElementById(
+      "formView"
+    );
+
+
+  const tableView =
+    document.getElementById(
+      "tableView"
+    );
+
+
+  const toggleButton =
+    document.getElementById(
+      "viewToggleButton"
+    );
+
+
+  const tableIsVisible =
+    tableView.style.display ===
+      "block";
+
+
+  if (tableIsVisible) {
+
+    tableView.style.display =
+      "none";
+
+
+    formView.style.display =
+      "block";
+
+
+    toggleButton.innerText =
+      "Tabelle anzeigen";
+
+  } else {
+
+    buildOverviewTable();
+
+
+    formView.style.display =
+      "none";
+
+
+    tableView.style.display =
+      "block";
+
+
+    toggleButton.innerText =
+      "Formular anzeigen";
+
+  }
 
 }
 
