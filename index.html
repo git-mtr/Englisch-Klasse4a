@@ -144,33 +144,6 @@
     </div>
 
 
-    <!-- Übersetzungsrichtung -->
-
-    <div class="radio-group" id="directionGroup">
-
-      <label>
-        <input
-          type="radio"
-          name="direction"
-          value="en-de"
-          checked
-          onchange="resetUI()"
-        >
-        🇬🇧 Englisch → Deutsch
-      </label>
-
-      <label>
-        <input
-          type="radio"
-          name="direction"
-          value="de-en"
-          onchange="resetUI()"
-        >
-        🇩🇪 Deutsch → Englisch
-      </label>
-
-    </div>
-
 
     <!-- Themenauswahl -->
 
@@ -181,7 +154,7 @@
         class="topic-select"
         onchange="changeTopic()"
       >
-        <option value="all">All</option>
+        <option value="all">Alles</option>
         <option value="begruessung">Begrüßung</option>
         <option value="alter">Alter</option>
         <option value="nahrung">Nahrung</option>
@@ -204,7 +177,7 @@
       </select>
 
 
-      <!-- All: Sprache zufällig wählen -->
+      <!-- Alles: Sprache zufällig wählen -->
 
       <div id="allOptions" class="all-options">
 
@@ -232,7 +205,34 @@
 
     </div>
 
+   <!-- Nicht Alles: Übersetzungsrichtung -->
 
+    <div class="radio-group" id="directionGroup">
+
+      <label>
+        <input
+          type="radio"
+          name="direction"
+          value="en-de"
+          checked
+          onchange="resetUI()"
+        >
+        🇬🇧 Englisch → Deutsch
+      </label>
+
+      <label>
+        <input
+          type="radio"
+          name="direction"
+          value="de-en"
+          onchange="resetUI()"
+        >
+        🇩🇪 Deutsch → Englisch
+      </label>
+
+    </div>
+
+    
     <div
       class="song-text"
       id="songText"
